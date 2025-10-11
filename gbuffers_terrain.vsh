@@ -17,8 +17,6 @@ void main(){
     texCoord = vaUV0;
     foliageColor = vaColor.rgb;
 
-    //curve horizon
-    vec3 worldSpaceVertexPosition = cameraPosition + (gbufferModelViewInverse * modelViewMatrix * vec4 (vaPosition + chunkOffset, 1)).xyz;
-    float distanceFromCamera = distance(worldSpaceVertexPosition, cameraPosition);
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(vaPosition + chunkOffset - 0.1 * distanceFromCamera, 1);
+    //curve horizon disabled
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(vaPosition + chunkOffset, 1);
 }
