@@ -1,19 +1,22 @@
 #version 460
 
 uniform sampler2D gtexture;
-
-in vec2 texCoord;
-in vec3 foliageColor;
+uniform sampler2D lightmap;
 
 /* DRAWBUFFERS: 0 */
-layout(location = 0) out vec4 outcolor0;
+layout(location = 0) out vec4 outColor0;
+
+in vec3 foliageColor;
+in vec2 texCoord;
+in vec2 lightMapCoords;
 
 void main(){
-    vec4 outputColorData = texture(gtexture, texCoord);
-    vec3 albedo = pow(outputColorData.rgb, vec3(2.2)) * pow(foliageColor, vec3(2.2));
+    vec3 lightColor = pow(texture(lightmap, lightMapCoords).rgb, vec3(2.2));
+    vec4 outputColorData = pow(texture(gtexture, texCoord), vec4(2.2));
+    vec3 outputColor = outputColorData.rgb * pow(foliageColor, vec3(2.2)) * lightColor;
     float transparency = outputColorData.a;
-    if(transparency < .1){
+    if(transparency < .1){       // remove the color thing bhind grasses and flowers
         discard;
     }
-    outcolor0 = vec4(pow(albedo, vec3(1/2.2)), transparency);
+    outColor0 = pow(vec4(outputColor, transparency), vec4(1/2.2));
 }
