@@ -1,12 +1,13 @@
 #version 460 compatibility
 
-out vec2 texCoord;
 out vec4 blockColor;
 out vec2 lightMapCoords;
 out vec3 viewSpacePosition;
+out vec3 geoNormal;
 
 void main(){
-    lightMapCoords =(gl_TextureMatrix[2] * gl_MultiTexCoord2).xy;
+    geoNormal = gl_Normal * gl_NormalMatrix;
+    lightMapCoords =(gl_TextureMatrix[2] * gl_MultiTexCoord2).xy;   //complex code that is impossible to understand
 
     blockColor = gl_Color;
     viewSpacePosition = (gl_ModelViewMatrix * gl_Vertex).xyz;
